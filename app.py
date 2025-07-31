@@ -37,7 +37,10 @@ Finally, generate a "Sources" section at the end with footnotes pointing to the 
 
         user_prompt = f"Firm: {firm_name}\nEmployees: {employee_names.strip()}\nInvestments: {investment_names.strip()}\nGenerate as specified."
 
-        response = openai.ChatCompletion.create(
+        from openai import OpenAI
+        client = OpenAI()
+        
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -45,6 +48,5 @@ Finally, generate a "Sources" section at the end with footnotes pointing to the 
             ],
             temperature=0.4
         )
-
-        output = response['choices'][0]['message']['content']
+        output = response.choices[0].message.content
         st.text_area("📄 Output", output, height=700)
